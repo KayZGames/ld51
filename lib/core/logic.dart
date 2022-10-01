@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dartemis/dartemis.dart';
 import 'package:gamedev_helpers/gamedev_helpers.dart';
 
@@ -10,42 +12,52 @@ part 'logic.g.dart';
   allOf: [
     Controller,
     Acceleration,
+    Orientation,
   ],
 )
 class ControllerToActionSystem extends _$ControllerToActionSystem {
   final _acc = 50.0;
-  final _sqrttwo = 1.4142;
 
   @override
   void processEntity(
     int entity,
     Controller controller,
     Acceleration acceleration,
+    Orientation orientation,
   ) {
     if (controller.up) {
-      acceleration.y += _acc * world.delta;
-    } else if (controller.down) {
-      acceleration.y -= _acc * world.delta;
-    } else if (controller.left) {
-      acceleration.x -= _acc * world.delta;
-    } else if (controller.right) {
       acceleration.x += _acc * world.delta;
-    } else if (controller.upleft) {
-      acceleration
-        ..y += _acc * world.delta / _sqrttwo
-        ..x -= _acc * world.delta / _sqrttwo;
-    } else if (controller.upright) {
-      acceleration
-        ..y += _acc * world.delta / _sqrttwo
-        ..x += _acc * world.delta / _sqrttwo;
-    } else if (controller.downleft) {
-      acceleration
-        ..y -= _acc * world.delta / _sqrttwo
-        ..x -= _acc * world.delta / _sqrttwo;
-    } else if (controller.downright) {
-      acceleration
-        ..y -= _acc * world.delta / _sqrttwo
-        ..x += _acc * world.delta / _sqrttwo;
+    } else if (controller.down) {
+      acceleration.x -= _acc * world.delta;
     }
+    if (controller.left) {
+      orientation.angle += 2 * world.delta;
+    } else if (controller.right) {
+      orientation.angle -= 2 * world.delta;
+    }
+  }
+}
+
+@Generate(
+  EntityProcessingSystem,
+  allOf: [
+    Acceleration,
+    Velocity,
+    Orientation,
+  ],
+)
+class AccelerationSystem extends _$AccelerationSystem {
+  @override
+  void processEntity(
+    int entity,
+    Acceleration acceleration,
+    Velocity velocity,
+    Orientation orientation,
+  ) {
+    final accForward = acceleration.x;
+    final speed = accForward * world.delta;
+    velocity
+      ..x += speed * cos(orientation.angle)
+      ..y += speed * sin(-orientation.angle);
   }
 }

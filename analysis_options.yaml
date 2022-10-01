@@ -3,6 +3,7 @@ analyzer:
     - angular
   exclude:
     - lib/**/*.g.dart
+    - lib/*.g.dart
   errors:
     unused_element: error
     unused_import: error
