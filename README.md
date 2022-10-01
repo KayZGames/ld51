@@ -1,5 +1,5 @@
-# %game_name% for %gamejam_name%
+# Lasershark 2 for Ludum Dare 51
 
-## Theme: %gamejam_theme%
+## Theme: Every 10 seconds
 
-[Play here](https://kayzgames.github.io/%game_dir%)
+[Play here](https://kayzgames.github.io/ld51)

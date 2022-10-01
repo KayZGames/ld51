@@ -9,7 +9,7 @@ import 'html/rendering/position_rendering_system.dart';
 
 class Game extends GameBase {
   final GameStateManager gameStateManager;
-  Game(this.gameStateManager) : super.noAssets('%game_dir%');
+  Game(this.gameStateManager) : super.noAssets('ld51');
 
   @override
   void createEntities() {
